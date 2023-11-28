@@ -1,0 +1,29 @@
+<!--
+ SA42 Androidサンプル10 メモ帳アプリ
+ res/values/string.xmlファイル
+ -->
+<resources>
+    <string name="app_name">お気に入り店</string>
+    <!-- リスト画面用 -->
+    <string name="tv_name_list">店リスト</string>
+    <string name="btn_new">新規</string>
+    <!-- 編集画面用 -->
+    <string name="tv_name_edit">お気に入りshop編集</string>
+    <string name="tv_name_insert">お気に入りshop登録</string>
+    <string name="tv_input_name">店名[必須]</string>
+    <string name="tv_input_tel">Tel</string>
+    <string name="tv_input_url">URL</string>
+    <string name="tv_input_note">メモ</string>
+    <string name="btn_save">更新</string>
+    <string name="btn_insert">登録</string>
+    <string name="btn_back">戻る</string>
+    <string name="btn_delete">削除</string>
+    <string name="msg_input_name">店名を入力してください。</string>
+    <string name="msg_save_error">店情報の保存に失敗しました。もう一度操作を行なってください。</string>
+    <string name="msg_delete_error">店情報の削除に失敗しました。もう一度操作を行なってください。</string>
+    <string name="dlg_full_title">削除確認ダイアログ</string>
+    <string name="dlg_btn_ok">OK</string>
+    <string name="dlg_btn_ng">NG</string>
+    <string name="dlg_full_msg">本当に削除しますか</string>
+</resources>
+    
