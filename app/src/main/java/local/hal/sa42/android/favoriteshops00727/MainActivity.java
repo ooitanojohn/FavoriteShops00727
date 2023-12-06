@@ -19,13 +19,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import local.hal.sa42.android.favoriteshops00727.data.ShopRepository;
 import local.hal.sa42.android.favoriteshops00727.data.local.DatabaseHelper;
 
-/**
- * SA42 Androidサンプル10 メモ帳アプリ
- * 第1画面表示用アクティビティクラス。
- * メモリストを表示する。
- *
- * @author Shinzo SAITO
- */
 public class MainActivity extends AppCompatActivity {
     /**
      * データベースヘルパーオブジェクト。
@@ -67,17 +60,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         _helper.close();
         super.onDestroy();
-    }
-
-    /**
-     * toolbar上のメニューが選択された時のリスナクラス。
-     */
-    private class ToolbarMenuItemClickListener implements Toolbar.OnMenuItemClickListener {
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            boolean returnVal = true;
-            int itemId = item.getItemId();
-        }
     }
 
     /**

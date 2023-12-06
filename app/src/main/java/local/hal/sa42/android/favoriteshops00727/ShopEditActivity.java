@@ -2,21 +2,27 @@ package local.hal.sa42.android.favoriteshops00727;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.appbar.MaterialToolbar;
 
 import local.hal.sa42.android.favoriteshops00727.data.ShopRepository;
 import local.hal.sa42.android.favoriteshops00727.data.local.DatabaseHelper;
 import local.hal.sa42.android.favoriteshops00727.data.local.Shop;
 
 /**
- * SA42 Androidサンプル10 メモ帳アプリ
  * 第2画面表示用アクティビティクラス。
  * メモ情報編集画面を表示する。
  *
@@ -48,21 +54,20 @@ public class ShopEditActivity extends AppCompatActivity {
         _helper = new local.hal.sa42.android.favoriteshops00727.data.local.DatabaseHelper(ShopEditActivity.this);
         _shopRepository = new ShopRepository(_helper);
 
-        Button btnSave = findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(new SaveButtonClickListener());
-        Button btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new BackButtonClickListener());
-        Button btnFullDialog = findViewById(R.id.btnDelete);
-        btnFullDialog.setOnClickListener(new ShowFullDialogClickListener());
+        MaterialToolbar tvNameEdit = findViewById(R.id.tvNameEdit);
+        Menu menu = tvNameEdit.getMenu();
+        MenuItem btnSave = menu.findItem(R.id.btnSave);
+        MenuItem btnDelete = menu.findItem(R.id.btnDelete);
+        tvNameEdit.setNavigationOnClickListener(new BackButtonClickListener());
+        tvNameEdit.setOnMenuItemClickListener(new ToolbarMenuItemClickListener());
 
         Intent intent = getIntent();
         _mode = intent.getIntExtra("mode", Consts.MODE_INSERT);
 
         if (_mode == Consts.MODE_INSERT) {
-            TextView tvNameEdit = findViewById(R.id.tvNameEdit);
-            tvNameEdit.setText(R.string.tv_name_insert);
-            btnSave.setText(R.string.btn_insert);
-            btnFullDialog.setVisibility(View.INVISIBLE);
+            tvNameEdit.setTitle(R.string.tv_name_insert);
+            btnSave.setTitle("登録");
+            btnDelete.setVisible(false);
         } else {
             _idNo = intent.getLongExtra("idNo", 0);
             Shop shopData = _shopRepository.getOneTask(_idNo);
@@ -85,38 +90,7 @@ public class ShopEditActivity extends AppCompatActivity {
     }
 
     /**
-     * 登録・更新ボタンがタップされたときのリスナクラス。
-     */
-    private class SaveButtonClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            EditText etInputName = findViewById(R.id.etInputName);
-            String inputName = etInputName.getText().toString();
-            if (inputName.equals("")) {
-                Toast.makeText(ShopEditActivity.this, R.string.msg_input_name,
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                EditText etInputTel = findViewById(R.id.etInputTel);
-                String inputTel = etInputTel.getText().toString();
-                EditText etInputUrl = findViewById(R.id.etInputUrl);
-                String inputUrl = etInputUrl.getText().toString();
-                EditText etInputNote = findViewById(R.id.etInputNote);
-                String inputNote = etInputNote.getText().toString();
-                boolean saveResult = _shopRepository.saveMemo(_mode, _idNo, inputName,
-                        inputTel,inputUrl,inputNote);
-                if (saveResult) {
-                    finish();
-                } else {
-                    Toast.makeText(ShopEditActivity.this, R.string.msg_save_error,
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-
-    /**
-     * 戻るボタンがタップされたときのリスナクラス。
+     * Toolbar上の戻るボタンがクリックされた時のリスナクラス。
      */
     private class BackButtonClickListener implements View.OnClickListener {
         @Override
@@ -126,14 +100,44 @@ public class ShopEditActivity extends AppCompatActivity {
     }
 
     /**
-     * 通常ダイアログ表示ボタンがクリックされた時のリスナクラス。
+     * Toolbar上のメニューが選択された時のリスナクラス。
      */
-    private class ShowFullDialogClickListener implements View.OnClickListener {
+    private class ToolbarMenuItemClickListener implements
+            Toolbar.OnMenuItemClickListener {
         @Override
-        public void onClick(View view) {
-            DeleteConfirmDialogFragment dialog = new DeleteConfirmDialogFragment(_shopRepository,_idNo);
-            FragmentManager manager = getSupportFragmentManager();
-            dialog.show(manager, "FullDialogFragment");
+        public boolean onMenuItemClick(MenuItem item) {
+            boolean returnVal = true;
+            int itemId = item.getItemId();
+            if (itemId == R.id.btnSave) {
+                EditText etInputName = findViewById(R.id.etInputName);
+                String inputName = etInputName.getText().toString();
+                if (inputName.equals("")) {
+                    Toast.makeText(ShopEditActivity.this, R.string.msg_input_name,
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    EditText etInputTel = findViewById(R.id.etInputTel);
+                    String inputTel = etInputTel.getText().toString();
+                    EditText etInputUrl = findViewById(R.id.etInputUrl);
+                    String inputUrl = etInputUrl.getText().toString();
+                    EditText etInputNote = findViewById(R.id.etInputNote);
+                    String inputNote = etInputNote.getText().toString();
+                    boolean saveResult = _shopRepository.saveMemo(_mode, _idNo, inputName,
+                            inputTel, inputUrl, inputNote);
+                    if (saveResult) {
+                        finish();
+                    } else {
+                        Toast.makeText(ShopEditActivity.this, R.string.msg_save_error,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (itemId == R.id.btnDelete) {
+                DeleteConfirmDialogFragment dialog = new DeleteConfirmDialogFragment(_shopRepository, _idNo);
+                FragmentManager manager = getSupportFragmentManager();
+                dialog.show(manager, "FullDialogFragment");
+            } else {
+                returnVal = false;
+            }
+            return returnVal;
         }
     }
 }

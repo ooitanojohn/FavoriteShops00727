@@ -4,13 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * SA42 Androidサンプル10 メモ帳アプリ
- * <p>
- * データベースのヘルパークラス。
- *
- * @author Shinzo SAITO
- */
 public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * データベースファイル名の定数フィールド。
